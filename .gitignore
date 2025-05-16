@@ -1,0 +1,23 @@
+# Virtual environment
+.venv/
+venv/
+
+# System files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Saved models and local data
+models/
+data/
+
+# VS Code settings
+.vscode/
+
+# Streamlit cache
+.streamlit/
