@@ -28,21 +28,30 @@ def optimize_quotes_simple():
             print("No quotes found.")
             return
 
-        # Simulate selling price with a fixed 20% markup
-        markup = 1.20
-        df['selling_price'] = df['unit_price'] * markup
+        # Define minimum and maximum markup (e.g., 5% to 20% markup)
+        MIN_MARKUP = 1.05  # 5% margin
+        MAX_MARKUP = 1.20  # 20% margin
+
+        # Normalize ml_score to [0, 1] range
+        scaler = MinMaxScaler()
+        df['ml_score_norm'] = scaler.fit_transform(df[['ml_score']])
+
+        # Calculate markup proportionally to normalized ml_score
+        df['markup'] = MIN_MARKUP + df['ml_score_norm'] * (MAX_MARKUP - MIN_MARKUP)
+
+        # Calculate selling price and profit margin based on dynamic markup
+        df['selling_price'] = df['unit_price'] * df['markup']
         df['profit_margin'] = (df['selling_price'] - df['unit_price']) / df['selling_price']
 
-        # Normalize ml_score and profit_margin to [0,1] range
-        scaler = MinMaxScaler()
-        df[['ml_score_norm', 'profit_margin_norm']] = scaler.fit_transform(df[['ml_score', 'profit_margin']])
+        # Normalize ml_score_norm and profit_margin to [0,1] range for weighted scoring
+        df[['ml_score_norm_scaled', 'profit_margin_norm']] = scaler.fit_transform(df[['ml_score_norm', 'profit_margin']])
 
         # Define weights: higher for ml_score, lower for profit margin
-        WEIGHTS = {'ml_score_norm': 0.7, 'profit_margin_norm': 0.3}
+        WEIGHTS = {'ml_score_norm_scaled': 0.7, 'profit_margin_norm': 0.3}
 
         # Compute final weighted score
         df['final_score'] = (
-            df['ml_score_norm'] * WEIGHTS['ml_score_norm'] +
+            df['ml_score_norm_scaled'] * WEIGHTS['ml_score_norm_scaled'] +
             df['profit_margin_norm'] * WEIGHTS['profit_margin_norm']
         )
 
@@ -88,3 +97,4 @@ def optimize_quotes_simple():
 
 if __name__ == "__main__":
     optimize_quotes_simple()
+
