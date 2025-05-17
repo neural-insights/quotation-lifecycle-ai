@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Selected Quotes</title>
+  
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <style>
+    body {
+      padding: 30px;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    table {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      vertical-align: middle !important;
+    }
+    .profit-positive {
+      color: green;
+      font-weight: bold;
+    }
+    .profit-negative {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Selected Quotes</h1>
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Request ID</th>
+          <th>Customer</th>
+          <th>Supplier</th>
+          <th>Quote ID</th>
+          <th>Unit Price ($)</th>
+          <th>Profit Margin (%)</th>
+          <th>Heuristic Score</th>
+          <th>RFQ Sent At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for quote in quotes %}
+        <tr>
+          <td>{{ quote.client_request_id }}</td>
+          <td>{{ quote.customer_id }}</td>
+          <td>{{ quote.supplier_name }}</td>
+          <td>{{ quote.quotation_response_id }}</td>
+          <td>${{ '%.2f' | format(quote.unit_price) }}</td>
+          <td class="{{ 'profit-positive' if quote.profit_margin > 0 else 'profit-negative' }}">
+            {{ '%.1f' | format(quote.profit_margin * 100) }}%
+          </td>
+          <td>{{ '%.2f' | format(quote.heuristic_score) }}</td>
+          <td>{{ quote.rfq_sent_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bootstrap Bundle JS CDN (Popper + Bootstrap JS) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
