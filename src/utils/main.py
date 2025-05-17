@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from typing import List
-from db import get_db
-from models import ClientRequest as SQLClientRequest
-from schemas import ClientRequestSchema as PydanticClientRequest
-from synthetic_data import generate_bulk_requests
+from utils.db import get_db
+from utils.models import ClientRequest as SQLClientRequest
+from utils.schemas import ClientRequestSchema as PydanticClientRequest
+from utils.synthetic_data import generate_bulk_requests
 
 app = FastAPI()
 

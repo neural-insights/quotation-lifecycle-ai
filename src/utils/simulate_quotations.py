@@ -1,31 +1,27 @@
 import random
-from db import SessionLocal
-from models import ClientRequest, RFQSent, QuotationResponse
+from utils.db import SessionLocal
+from utils.models import ClientRequest, RFQSent, QuotationResponse
 from datetime import datetime
 
-# Base price table per product type
-PRODUCT_BASE_PRICES = {
-    "Flyer": 0.12,
-    "Banner": 2.50,
-    "T-shirt": 4.00,
-    "Poster": 1.80,
-    "Sticker": 0.30
-}
-
-# Price modifiers by color specification
-COLOR_PRICE_MODIFIERS = {
-    "CMYK": 1.0,
-    "Pantone": 1.2,
-    "RGB": 0.9,
-    "Grayscale": 0.8,
+# Base price matrix: product type + color specification
+BASE_PRICE_MATRIX = {
+    "Flyer": {"4x4": 10.0, "4x0": 9.5, "Full color": 10.5, "B&W": 9.0},
+    "Poster": {"4x4": 11.0, "4x0": 10.0, "Full color": 11.5, "B&W": 9.8},
+    "T-shirt": {"4x4": 12.0, "4x0": 11.0, "Full color": 13.0, "B&W": 10.5},
+    "Sticker": {"4x4": 9.5, "4x0": 9.0, "Full color": 10.0, "B&W": 8.5},
+    "Brochure": {"4x4": 11.5, "4x0": 10.5, "Full color": 12.0, "B&W": 10.0},
+    "Banner": {"4x4": 13.0, "4x0": 12.0, "Full color": 13.5, "B&W": 11.5},
 }
 
 def simulate_quotation(product_type, color_spec, quantity, is_custom=False):
-    base_price = PRODUCT_BASE_PRICES.get(product_type, 1.00)  # generic fallback
-    color_modifier = COLOR_PRICE_MODIFIERS.get(color_spec, 1.0)
+    base_price = BASE_PRICE_MATRIX.get(product_type, {}).get(color_spec)
+
+    if base_price is None:
+        # fallback if combination not found
+        base_price = 10.0
 
     multiplier = 1.2 if is_custom else 1.0
-    unit_price = round(base_price * color_modifier * random.uniform(0.9, 1.2) * multiplier, 2)
+    unit_price = round(base_price * random.uniform(0.9, 1.2) * multiplier, 2)
     
     return {
         "unit_price": unit_price,
@@ -69,6 +65,4 @@ def generate_quotations():
 
 if __name__ == "__main__":
     generate_quotations()
-
-
 

@@ -1,9 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from utils.paths import DB_PATH  
 
-# SQLite database
-DATABASE_URL = "sqlite:///./quotations.db"
+# Use absolute path to SQLite database
+DATABASE_URL = f"sqlite:///{DB_PATH}" 
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 

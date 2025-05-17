@@ -1,5 +1,5 @@
-from db import SessionLocal
-from models import Supplier
+from utils.db import SessionLocal
+from utils.models import Supplier
 import random
 
 def generate_suppliers(n=20):

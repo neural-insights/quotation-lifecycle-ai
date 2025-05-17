@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 import random
 from sqlalchemy.orm import Session
-from models import RFQSent, RFQDetails, ClientRequest, Supplier
-from db import SessionLocal
+from utils.models import RFQSent, RFQDetails, ClientRequest, Supplier
+from utils.db import SessionLocal
 
 # Possible standard RFQ values
 EXPECTED_FORMAT_OPTIONS = ["PDF", "DOCX", "XLSX"]

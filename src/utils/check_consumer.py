@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import ClientRequest
+from utils.models import ClientRequest
 
 DATABASE_URL = "sqlite:///./quotations.db"
 

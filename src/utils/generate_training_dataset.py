@@ -1,8 +1,8 @@
 import random
 import math
 from datetime import datetime, timedelta
-from db import SessionLocal
-from models import TrainingQuotation
+from utils.db import SessionLocal
+from utils.models import TrainingQuotation
 
 NUM_SAMPLES = 10000
 TARGET_WIN_RATE = 0.20
@@ -71,7 +71,7 @@ def generate_synthetic_training_data():
         norm_quantity = normalize(quantity, 50, 1000)
 
         base_score = (1 - norm_price) * 0.5 + (1 - norm_days) * 0.3 + norm_quantity * 0.2
-        prob_win = sigmoid(base_score * 5 + random.uniform(-3, 3))
+        prob_win = sigmoid(base_score * 6 + random.uniform(-1, 1))
 
         score = 100
         score -= unit_price * 2
@@ -105,12 +105,12 @@ def generate_synthetic_training_data():
 
         records.append(record)
 
-    # 🔁 Label flipping: introduce noise by flipping 5% of each class
+    # 🔁 Label flipping: introduce noise by flipping 1% of each class
     won_ones = [r for r in records if r.won == 1]
     won_zeros = [r for r in records if r.won == 0]
 
-    flip_count_1_to_0 = max(1, int(len(won_ones) * 0.05))
-    flip_count_0_to_1 = max(1, int(len(won_zeros) * 0.05))
+    flip_count_1_to_0 = max(1, int(len(won_ones) * 0.01))
+    flip_count_0_to_1 = max(1, int(len(won_zeros) * 0.01))
 
     for r in random.sample(won_ones, flip_count_1_to_0):
         r.won = 0
@@ -123,7 +123,7 @@ def generate_synthetic_training_data():
     db.commit()
     db.close()
 
-    print(f"{NUM_SAMPLES} samples generated (~{TARGET_WIN_RATE*100}% win rate + 5% flipped noise).")
+    print(f"{NUM_SAMPLES} samples generated (~{TARGET_WIN_RATE*100}% win rate + 1% flipped noise).")
 
 if __name__ == "__main__":
     generate_synthetic_training_data()

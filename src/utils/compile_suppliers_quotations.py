@@ -1,8 +1,8 @@
 import random
 import datetime
 from sqlalchemy.orm import Session
-from models import Supplier, RFQSent, QuotationResponse, RealQuotationData  
-from db import SessionLocal
+from utils.models import Supplier, RFQSent, QuotationResponse, RealQuotationData  
+from utils.db import SessionLocal
 
 def calculate_rfq_complexity(product_type: str, quantity: int) -> float:
     """Calculate complexity score based on product type and quantity."""
@@ -35,7 +35,7 @@ def compile_test_dataset(db: Session):
             rfq.client_request.quantity
         )
         urgent = is_urgent(details.response_deadline, rfq.sent_at)
-        is_custom = "custom" in rfq.client_request.product_type.lower()
+        is_custom = bool(rfq.client_request.is_custom)
 
 
         # Prepare TrainingQuotation object but DO NOT set 'won' field

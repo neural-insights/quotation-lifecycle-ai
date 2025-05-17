@@ -1,7 +1,8 @@
 import requests
+import random
 from datetime import datetime
-from db import SessionLocal
-from models import ClientRequest
+from utils.db import SessionLocal
+from utils.models import ClientRequest
 
 def fetch_crm_data():
     """Fetch simulated CRM requests from the local API endpoint."""
@@ -28,6 +29,8 @@ def save_to_db(data):
         if not customer_id:
             print("Skipping entry without customer_id.")
             continue
+        
+        is_custom = random.random() < 0.2
 
         # Avoid duplicate entries for the same customer
         existing = db.query(ClientRequest).filter_by(customer_id=customer_id).first()
@@ -38,7 +41,7 @@ def save_to_db(data):
                 deadline=deadline_date,
                 specifications=entry.get("specifications", ""),
                 color_spec=entry.get("color_spec", ""),
-                is_custom=entry.get("is_custom", False),
+                is_custom=is_custom,
                 customer_id=customer_id
             )
             db.add(new_request)

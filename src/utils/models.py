@@ -1,6 +1,6 @@
 from sqlalchemy import (Column, Integer, String, Float, ForeignKey, DateTime, Boolean)
 from sqlalchemy.orm import relationship, declarative_base
-from db import Base
+from utils.db import Base
 import random
 
 # Base = declarative_base()
@@ -82,10 +82,9 @@ class QuotationResponse(Base):
 
 class QuoteScore(Base):
     __tablename__ = "quote_scores"
-    id = Column(Integer, primary_key=True)
-    quotation_id = Column(Integer, ForeignKey("quotation_responses.id"))
-    heuristic_score = Column(Float)
-    ml_score = Column(Float)
+    id = Column(Integer, ForeignKey("quotation_responses.id"), primary_key=True)
+    performance_score  = Column(Float)
+    won = Column(Float)
 
     quotation = relationship("QuotationResponse", back_populates="score")
 
@@ -114,25 +113,35 @@ class RealQuotationData(Base):
     is_custom = Column(Boolean)
     won = Column(Boolean)
     
-class FinalQuote(Base):
-    __tablename__ = "final_quotes"
-    id = Column(Integer, primary_key=True)
-    client_request_id = Column(Integer, ForeignKey("client_requests.id"))
-    selected_supplier_id = Column(Integer, ForeignKey("suppliers.id"))
-    finalized_price = Column(Float)
+class MergedQuote(Base):
+    __tablename__ = "merged_quotes"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)  # chave primária própria
+    client_request_id = Column(Integer, nullable=False)
+    customer_id = Column(String, nullable=True)  # string porque nos seus prints IDs são 'C330' etc
+    supplier_id = Column(Integer, nullable=False)
+    supplier_name = Column(String, nullable=False)
+    supplier_performance_score = Column(Float, nullable=True)
+    quotation_response_id = Column(Integer, nullable=False)
+    unit_price = Column(Float, nullable=False)
+    delivery_days = Column(Integer, nullable=False)
+    rfq_sent_at = Column(DateTime, nullable=False)
+    ml_score = Column(Float, nullable=True)
+    heuristic_score = Column(Float, nullable=True)
 
 
-class CustomerFeedback(Base):
-    __tablename__ = "customer_feedback"
-    id = Column(Integer, primary_key=True)
-    final_quote_id = Column(Integer, ForeignKey("final_quotes.id"))
-    accepted = Column(Boolean)
-    reason = Column(String)
+class SelectedQuote(Base):
+    __tablename__ = "selected_quotes"
 
-
-class PredictedOutcomes(Base):
-    __tablename__ = "predicted_outcomes"
-    id = Column(Integer, primary_key=True)
-    client_request_id = Column(Integer, ForeignKey("client_requests.id"))
-    predicted_supplier_id = Column(Integer, ForeignKey("suppliers.id"))
-    confidence_score = Column(Float)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    client_request_id = Column(Integer, nullable=False)
+    customer_id = Column(String, nullable=True)
+    supplier_id = Column(Integer, nullable=False)
+    supplier_name = Column(String, nullable=False)
+    supplier_performance_score = Column(Float, nullable=True)
+    quotation_response_id = Column(Integer, nullable=False)
+    unit_price = Column(Float, nullable=False)
+    profit_margin = Column(Float, nullable=True)
+    delivery_days = Column(Integer, nullable=False)
+    rfq_sent_at = Column(DateTime, nullable=False)
+    heuristic_score = Column(Float, nullable=True)
