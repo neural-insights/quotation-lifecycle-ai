@@ -2,6 +2,10 @@
 
 A **lifecycle AI** solution for intelligent quotation scoring — integrating synthetic data generation, training pipeline automation, and Flask-based deployment for seamless monitoring and visualization.
 
+![AI Visualization](src/img/openart-image_Cii8lQqE_1747523132664_raw.png)
+
+💡 This project simulates an AI-powered quotation lifecycle system designed to automate B2B quoting processes, optimize supplier selection, and maximize profit margins. By replacing manual workflows with intelligent data-driven automation, it significantly reduces processing time and labor effort across the end-to-end quotation pipeline—enabling faster, smarter commercial decision-making.
+
 ---
 
 ## 📚 Table of Contents
@@ -123,7 +127,15 @@ This project is licensed under the terms of the **MIT License**.
 
 ---
 
-## 🤝 Contribution
+
+### 🤝 How to Contribute
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/some-feature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/some-feature`)
+5. Open a Pull Request
 
 Pull requests and issues are welcome.  
 Please ensure code quality, readability, and consistency with the current architecture.
+
+
