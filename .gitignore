@@ -21,3 +21,7 @@ data/
 
 # Streamlit cache
 .streamlit/
+
+tree_generator.py
+
+tree_generator.py 
