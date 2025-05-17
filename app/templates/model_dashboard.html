@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 32px;
+        }
+
+        h2, h3 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 22px;
+        }
+
+        .image-center,
+        .image-row,
+        .tables-row {
+            margin-bottom: 40px;
+        }
+
+        .image-center {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .image-center img {
+            width: 60%;
+            max-width: 800px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .image-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .image-col {
+            text-align: center;
+            max-width: 600px;
+            flex: 1;
+        }
+
+        .image-col img {
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .tables-row {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            flex-wrap: wrap;
+            width: 90%;
+            margin: 0 auto 60px;
+        }
+
+        .table-col {
+            flex: 1;
+            min-width: 350px;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .table-title {
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Model Evaluation Dashboard</h1>
+
+    <!-- Centered Confusion Matrix -->
+    <div class="image-center">
+        <h3>Confusion Matrices</h3>
+        <img src="{{ confusion_matrix_image }}" alt="Confusion Matrices">
+    </div>
+
+    <!-- ROC and Feature Importance side by side -->
+    <div class="image-row">
+        <div class="image-col">
+            <h3>ROC Curve</h3>
+            <img src="{{ roc_curve_image }}" alt="ROC Curve">
+        </div>
+        <div class="image-col">
+            <h3>Top Influential Features</h3>
+            <img src="{{ feature_importance_image }}" alt="Feature Importance">
+        </div>
+    </div>
+
+    <!-- Side-by-side tables -->
+    <div class="tables-row">
+        <div class="table-col">
+            <div class="table-title">Classification Report - Train</div>
+            <table>
+                <tr>
+                    <th>Class</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1-score</th>
+                    <th>Support</th>
+                </tr>
+                {% for label, metrics in class_report_train.items() %}
+                    {% if label != 'accuracy' %}
+                        <tr>
+                            <td>{{ label }}</td>
+                            <td>{{ "%.2f"|format(metrics['precision']) }}</td>
+                            <td>{{ "%.2f"|format(metrics['recall']) }}</td>
+                            <td>{{ "%.2f"|format(metrics['f1-score']) }}</td>
+                            <td>{{ metrics['support'] }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr>
+                    <td colspan="4"><strong>Accuracy</strong></td>
+                    <td>{{ "%.2f"|format(class_report_train['accuracy']) }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="table-col">
+            <div class="table-title">Classification Report - Validation</div>
+            <table>
+                <tr>
+                    <th>Class</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1-score</th>
+                    <th>Support</th>
+                </tr>
+                {% for label, metrics in class_report_val.items() %}
+                    {% if label != 'accuracy' %}
+                        <tr>
+                            <td>{{ label }}</td>
+                            <td>{{ "%.2f"|format(metrics['precision']) }}</td>
+                            <td>{{ "%.2f"|format(metrics['recall']) }}</td>
+                            <td>{{ "%.2f"|format(metrics['f1-score']) }}</td>
+                            <td>{{ metrics['support'] }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr>
+                    <td colspan="4"><strong>Accuracy</strong></td>
+                    <td>{{ "%.2f"|format(class_report_val['accuracy']) }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

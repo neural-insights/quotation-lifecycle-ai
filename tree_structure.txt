@@ -1,0 +1,51 @@
+.
+├── .gitignore
+├── .vscode
+│   └── settings.json
+├── LICENSE.txt
+├── app
+│   ├── main.py
+│   ├── static
+│   │   ├── confusion_matrix.png
+│   │   ├── feature_importance.png
+│   │   ├── gear.gif
+│   │   └── roc_curve.png
+│   └── templates
+│       ├── home.html
+│       ├── model_dashboard.html
+│       ├── selected_quotes.html
+│       └── supplier_performance.html
+├── requirements.txt
+├── run_all.py
+├── src
+│   ├── data
+│   │   └── quotations.db
+│   ├── img
+│   ├── models
+│   │   ├── best_logistic_model.pkl
+│   │   └── minmax_scaler.pkl
+│   ├── notebooks
+│   │   └── quotation_scoring_model.ipynb
+│   ├── pipelines
+│   └── utils
+│       ├── __init__.py
+│       ├── check_consumer.py
+│       ├── compile_suppliers_quotations.py
+│       ├── consumer.py
+│       ├── db.py
+│       ├── final_quote_optimizer.py
+│       ├── generate_suppliers.py
+│       ├── generate_training_dataset.py
+│       ├── init_db.py
+│       ├── main.py
+│       ├── models.py
+│       ├── optimize_quotes_profit.py
+│       ├── paths.py
+│       ├── run_won_scoring.py
+│       ├── schemas.py
+│       ├── send_rfqs.py
+│       ├── simulate_quotations.py
+│       ├── synthetic_data.py
+│       └── training_lr_model.py
+├── tree_generator.py
+└── tree_structure.txt
