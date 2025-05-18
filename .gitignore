@@ -19,8 +19,7 @@ data/
 # VS Code settings
 .vscode/
 
-# Streamlit cache
-.streamlit/
+presentation/
 
 tree_generator.py
 
