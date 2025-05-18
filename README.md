@@ -2,7 +2,7 @@
 
 A **lifecycle AI** solution for intelligent quotation scoring — integrating synthetic data generation, training pipeline automation, and Flask-based deployment for seamless monitoring and visualization.
 
-![AI Visualization](https://github.com/neural-insights/quotation-lifecycle-ai/blob/master/src/img/openart-image_Cii8lQqE_1747523132664_raw.png)
+![AI Visualization](https://github.com/neural-insights/quotation-lifecycle-ai/blob/master/src/img/openart-image_Cii8lQqE_1747523132664_raw.png alt="AI Visualization" width="70%")
 
 💡 This project simulates an AI-powered quotation lifecycle system designed to automate B2B quoting processes, optimize supplier selection, and maximize profit margins. By replacing manual workflows with intelligent data-driven automation, it significantly reduces processing time and labor effort across the end-to-end quotation pipeline—enabling faster, smarter commercial decision-making.
 
