@@ -2,7 +2,7 @@
 
 A **lifecycle AI** solution for intelligent quotation scoring — integrating synthetic data generation, training pipeline automation, and Flask-based deployment for seamless monitoring and visualization.
 
-![AI Visualization](https://github.com/neural-insights/quotation-lifecycle-ai/blob/master/src/img/openart-image_Cii8lQqE_1747523132664_raw.png alt="AI Visualization" width="70%")
+![AI Visualization](https://github.com/neural-insights/quotation-lifecycle-ai/blob/master/src/img/openart-image_Cii8lQqE_1747523132664_raw.png)
 
 💡 This project simulates an AI-powered quotation lifecycle system designed to automate B2B quoting processes, optimize supplier selection, and maximize profit margins. By replacing manual workflows with intelligent data-driven automation, it significantly reduces processing time and labor effort across the end-to-end quotation pipeline—enabling faster, smarter commercial decision-making.
 
@@ -76,7 +76,20 @@ All internal modules use relative imports based on the `src/` directory.
   $env:PYTHONPATH="$PWD/src"
   ```
 
-### 5. Run the Full Pipeline
+### 5. Run the FastAPI App
+To launch the interactive API (for simulating RFQ requests and viewing responses):
+
+```bash
+uvicorn src.utils.main:app --reload
+```
+This will start the app at http://127.0.0.1:8000, with automatic reload for development.
+
+*Access the interactive Swagger UI at: http://127.0.0.1:8000/docs
+
+
+### 6. Run the Full Pipeline
+
+With the server running, open another terminal, activate the virtual environment, set the Python path, and then run:
 
 ```bash
 python run_all.py
