@@ -48,7 +48,7 @@ Activate the environment:
 
 - **Windows**
   ```cmd
-  .venv\Scripts\activate
+  source .venv\Scripts\activate
   ```
 
 ### 3. Install Dependencies
