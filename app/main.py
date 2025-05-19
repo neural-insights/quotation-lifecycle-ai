@@ -86,6 +86,7 @@ def supplier_performance():
 @app.route("/model_dashboard")
 def model_dashboard():
     from sklearn.model_selection import train_test_split
+    from sklearn.calibration import calibration_curve
 
     # Load model and scaler
     model = joblib.load("src/models/best_logistic_model.pkl")
@@ -98,20 +99,16 @@ def model_dashboard():
 
     non_binary_columns = ['unit_price', 'delivery_days', 'performance_score', 'response_time', 'rfq_complexity_score']
 
-    # Train/validation split
+    # Split data
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    # Apply scaler only to relevant columns
     X_train_scaled = X_train.copy()
     X_train_scaled[non_binary_columns] = scaler.transform(X_train[non_binary_columns])
-
     X_val_scaled = X_val.copy()
     X_val_scaled[non_binary_columns] = scaler.transform(X_val[non_binary_columns])
 
-    # Predict
+    # Predictions
     y_train_pred = model.predict(X_train_scaled)
     y_val_pred = model.predict(X_val_scaled)
-
     y_train_proba = model.predict_proba(X_train_scaled)[:, 1]
     y_val_proba = model.predict_proba(X_val_scaled)[:, 1]
 
@@ -119,25 +116,22 @@ def model_dashboard():
     class_report_train = classification_report(y_train, y_train_pred, output_dict=True)
     class_report_val = classification_report(y_val, y_val_pred, output_dict=True)
 
-    # Generate confusion matrix image
     os.makedirs(app.static_folder, exist_ok=True)
 
+    # Confusion matrices
     fig, ax = plt.subplots(1, 2, figsize=(12, 5))
     ConfusionMatrixDisplay.from_predictions(y_train, y_train_pred, ax=ax[0], cmap="Blues", colorbar=False)
     ax[0].set_title("Confusion Matrix - Train Set")
-
     ConfusionMatrixDisplay.from_predictions(y_val, y_val_pred, ax=ax[1], cmap="Greens", colorbar=False)
     ax[1].set_title("Confusion Matrix - Validation Set")
-
     cm_path = os.path.join(app.static_folder, "confusion_matrix.png")
     plt.tight_layout()
     plt.savefig(cm_path)
     plt.close()
 
-    # ROC curve (val)
+    # ROC curve
     fpr, tpr, _ = roc_curve(y_val, y_val_proba)
     auc_score = roc_auc_score(y_val, y_val_proba)
-
     plt.figure(figsize=(6, 5))
     plt.plot(fpr, tpr, label=f"AUC = {auc_score:.3f}")
     plt.plot([0, 1], [0, 1], linestyle='--', color='gray')
@@ -147,7 +141,6 @@ def model_dashboard():
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-
     roc_path = os.path.join(app.static_folder, "roc_curve.png")
     plt.savefig(roc_path)
     plt.close()
@@ -155,13 +148,9 @@ def model_dashboard():
     # Feature importance
     coefs = model.coef_[0]
     features = X.columns
-    coef_df = pd.DataFrame({
-        'Feature': features,
-        'Coefficient': coefs
-    })
+    coef_df = pd.DataFrame({'Feature': features, 'Coefficient': coefs})
     coef_df['Abs_Coefficient'] = coef_df['Coefficient'].abs()
     coef_df.sort_values(by='Abs_Coefficient', ascending=False, inplace=True)
-
     feat_imp_path = os.path.join(app.static_folder, "feature_importance.png")
     plt.figure(figsize=(10, 6))
     sns.barplot(data=coef_df.head(10), x='Coefficient', y='Feature', palette='coolwarm')
@@ -173,14 +162,57 @@ def model_dashboard():
     plt.savefig(feat_imp_path)
     plt.close()
 
-    # Render template with both classification reports
+    # Calibration curve
+    true_fraction, predicted_prob = calibration_curve(y_val, y_val_proba, n_bins=10)
+    plt.figure(figsize=(6, 6))
+    plt.plot(predicted_prob, true_fraction, marker='o', label='Model')
+    plt.plot([0, 1], [0, 1], linestyle='--', color='gray', label='Perfect Calibration')
+    plt.xlabel('Predicted Probability')
+    plt.ylabel('Observed Frequency of Positives')
+    plt.title('Calibration Curve - Validation Set')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    calib_path = os.path.join(app.static_folder, "calibration_curve.png")
+    plt.savefig(calib_path)
+    plt.close()
+
+    # Probability distribution histogram
+    proba_df = pd.DataFrame({
+        'Predicted_Probability': y_val_proba,
+        'Actual_Label': y_val
+    })
+    plt.figure(figsize=(10, 6))
+    sns.histplot(
+        data=proba_df,
+        x='Predicted_Probability',
+        hue='Actual_Label',
+        bins=20,
+        kde=False,
+        stat='density',
+        palette='Set2',
+        multiple='stack'
+    )
+    plt.title('Predicted Probability Distribution by Class')
+    plt.xlabel('Predicted Probability (Class = 1)')
+    plt.ylabel('Density')
+    plt.legend(title='True Class', labels=['Negative (0)', 'Positive (1)'])
+    plt.grid(True)
+    plt.tight_layout()
+    proba_hist_path = os.path.join(app.static_folder, "proba_histogram.png")
+    plt.savefig(proba_hist_path)
+    plt.close()
+
     return render_template("model_dashboard.html",
         confusion_matrix_image="static/confusion_matrix.png",
         roc_curve_image="static/roc_curve.png",
         feature_importance_image="static/feature_importance.png",
+        calibration_curve_image="static/calibration_curve.png",
+        proba_histogram_image="static/proba_histogram.png",
         class_report_train=class_report_train,
         class_report_val=class_report_val
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
