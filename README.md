@@ -148,7 +148,7 @@ This will serve the app at:
 │   ├── static/                # Static assets for visualization
 │   │   ├── ...
 │   └── templates/             # HTML templates (Jinja2)
-│       ├── home...
+│       ├── ...
 ├── src/                       # Core source code
 │   ├── data/                  # Contains the SQLite database
 │   │   └── quotations.db
@@ -160,6 +160,7 @@ This will serve the app at:
 │   │   └── quotation_scoring_model.ipynb
 │   ├── pipelines/             # (Optional) Custom pipeline orchestration
 │   └── utils/                 # FastAPI + supporting logic
+│   │   ├── ...
 └── tree_structure.txt         # Output of the folder structure
 ```
 
