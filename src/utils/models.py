@@ -116,9 +116,9 @@ class RealQuotationData(Base):
 class MergedQuote(Base):
     __tablename__ = "merged_quotes"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)  # chave primária própria
+    id = Column(Integer, primary_key=True, autoincrement=True) 
     client_request_id = Column(Integer, nullable=False)
-    customer_id = Column(String, nullable=True)  # string porque nos seus prints IDs são 'C330' etc
+    customer_id = Column(String, nullable=True)  
     supplier_id = Column(Integer, nullable=False)
     supplier_name = Column(String, nullable=False)
     supplier_performance_score = Column(Float, nullable=True)
