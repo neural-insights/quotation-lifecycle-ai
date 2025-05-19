@@ -160,7 +160,6 @@ This will serve the app at:
 │   │   └── quotation_scoring_model.ipynb
 │   ├── pipelines/             # (Optional) Custom pipeline orchestration
 │   └── utils/                 # FastAPI + supporting logic
-├── QuotationAI_TechnicalDoc.pdf
 └── tree_structure.txt         # Output of the folder structure
 ```
 

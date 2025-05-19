@@ -48,5 +48,4 @@
 │       ├── simulate_quotations.py
 │       ├── synthetic_data.py
 │       └── training_lr_model.py
-├── QuotationAI_TechnicalDoc.pdf
 └── tree_structure.txt
