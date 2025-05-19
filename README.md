@@ -139,23 +139,16 @@ This will serve the app at:
 ```bash
 .
 ├── .gitignore                  # Git exclusions
-├── .vscode/                   # Editor configuration
-│   └── settings.json
 ├── LICENSE.txt                # Project license (MIT)
+├── README.md
+├── requirements.txt           # All Python dependencies
+├── run_all.py                 # Full pipeline executor (end-to-end)
 ├── app/                       # Flask dashboard application
 │   ├── main.py                # Entry point for the Flask app
 │   ├── static/                # Static assets for visualization
-│   │   ├── confusion_matrix.png
-│   │   ├── feature_importance.png
-│   │   ├── gear.gif
-│   │   └── roc_curve.png
+│   │   ├── ...
 │   └── templates/             # HTML templates (Jinja2)
-│       ├── home.html
-│       ├── model_dashboard.html
-│       ├── selected_quotes.html
-│       └── supplier_performance.html
-├── requirements.txt           # All Python dependencies
-├── run_all.py                 # Full pipeline executor (end-to-end)
+│       ├── home...
 ├── src/                       # Core source code
 │   ├── data/                  # Contains the SQLite database
 │   │   └── quotations.db
@@ -167,26 +160,7 @@ This will serve the app at:
 │   │   └── quotation_scoring_model.ipynb
 │   ├── pipelines/             # (Optional) Custom pipeline orchestration
 │   └── utils/                 # FastAPI + supporting logic
-│       ├── __init__.py
-│       ├── check_consumer.py
-│       ├── compile_suppliers_quotations.py
-│       ├── consumer.py
-│       ├── db.py
-│       ├── final_quote_optimizer.py
-│       ├── generate_suppliers.py
-│       ├── generate_training_dataset.py
-│       ├── init_db.py
-│       ├── main.py            # FastAPI app entry point
-│       ├── models.py          # Pydantic models
-│       ├── optimize_quotes_profit.py
-│       ├── paths.py
-│       ├── run_won_scoring.py
-│       ├── schemas.py         # API and database schemas
-│       ├── send_rfqs.py
-│       ├── simulate_quotations.py
-│       ├── synthetic_data.py
-│       └── training_lr_model.py
-├── tree_generator.py          # Script to generate folder structure automatically
+├── QuotationAI_TechnicalDoc.pdf
 └── tree_structure.txt         # Output of the folder structure
 ```
 

@@ -1,8 +1,9 @@
 .
-├── .gitignore
-├── .vscode
-│   └── settings.json
-├── LICENSE.txt
+├── .gitignore                  # Git exclusions
+├── LICENSE.txt                # Project license (MIT)
+├── README.md
+├── requirements.txt           # All Python dependencies
+├── run_all.py                 # Full pipeline executor (end-to-end)
 ├── app
 │   ├── main.py
 │   ├── static
@@ -47,5 +48,5 @@
 │       ├── simulate_quotations.py
 │       ├── synthetic_data.py
 │       └── training_lr_model.py
-├── tree_generator.py
+├── QuotationAI_TechnicalDoc.pdf
 └── tree_structure.txt
